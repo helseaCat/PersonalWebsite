@@ -92,4 +92,40 @@ describe('App', () => {
     fireEvent.click(toggle)
     expect(localStorage.getItem('theme')).toBe('dark')
   })
+
+  it('renders the sticky note button', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: 'Open sticky note' })).toBeInTheDocument()
+  })
+
+  it('opens the sticky note modal when clicked', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open sticky note' }))
+    expect(screen.getByRole('dialog', { name: 'Sticky note' })).toBeInTheDocument()
+    expect(screen.getByText(/drop a note here/i)).toBeInTheDocument()
+  })
+
+  it('saves note to localStorage as user types', () => {
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open sticky note' }))
+    const textarea = screen.getByLabelText('Your note')
+    fireEvent.change(textarea, { target: { value: 'Hello from a visitor!' } })
+    expect(localStorage.getItem('visitor-note')).toBe('Hello from a visitor!')
+  })
+
+  it('loads saved note from localStorage', () => {
+    localStorage.setItem('visitor-note', 'I was here!')
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open sticky note' }))
+    expect(screen.getByLabelText('Your note')).toHaveValue('I was here!')
+  })
+
+  it('clears note when clear button is clicked', () => {
+    localStorage.setItem('visitor-note', 'Some note')
+    render(<App />)
+    fireEvent.click(screen.getByRole('button', { name: 'Open sticky note' }))
+    fireEvent.click(screen.getByText('Clear note'))
+    expect(screen.getByLabelText('Your note')).toHaveValue('')
+    expect(localStorage.getItem('visitor-note')).toBe('')
+  })
 })
