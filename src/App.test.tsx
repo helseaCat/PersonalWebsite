@@ -10,12 +10,12 @@ beforeEach(() => {
 describe('App', () => {
   it('renders the welcome heading', () => {
     render(<App />)
-    expect(screen.getByText('Welcome!')).toBeInTheDocument()
+    expect(screen.getByText("Hi, I'm Chelsea Scott")).toBeInTheDocument()
   })
 
   it('renders the intro paragraph', () => {
     render(<App />)
-    expect(screen.getByText(/a lot of programming projects/i)).toBeInTheDocument()
+    expect(screen.getByText(/scalable AWS infrastructure/i)).toBeInTheDocument()
   })
 
   it('renders the header with site name', () => {
