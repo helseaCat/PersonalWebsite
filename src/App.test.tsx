@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import App from './App'
 
@@ -18,11 +18,27 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: 'Chelsea Scott' })).toBeInTheDocument()
   })
 
-  it('renders the navigation links', () => {
+  it('renders the desktop navigation links', () => {
     render(<App />)
-    const nav = screen.getByRole('navigation')
+    const nav = screen.getByRole('navigation', { name: 'Main navigation' })
     expect(nav).toBeInTheDocument()
     expect(nav.querySelectorAll('a')).toHaveLength(3)
+  })
+
+  it('renders the mobile menu toggle button', () => {
+    render(<App />)
+    const toggle = screen.getByRole('button', { name: 'Toggle menu' })
+    expect(toggle).toBeInTheDocument()
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  })
+
+  it('opens mobile nav when hamburger is clicked', () => {
+    render(<App />)
+    const toggle = screen.getByRole('button', { name: 'Toggle menu' })
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    const mobileNav = screen.getByRole('navigation', { name: 'Mobile navigation' })
+    expect(mobileNav.querySelectorAll('a')).toHaveLength(3)
   })
 
   it('renders the footer with copyright', () => {
