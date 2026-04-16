@@ -12,7 +12,11 @@ function Header() {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     const target = document.querySelector(href)
-    target?.scrollIntoView({ behavior: 'smooth' })
+    if (target) {
+      const headerHeight = document.querySelector('header')?.offsetHeight ?? 0
+      const top = target.getBoundingClientRect().top + window.scrollY - headerHeight
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
     setIsOpen(false)
   }
 
