@@ -1,6 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import App from './App'
+
+beforeEach(() => {
+  localStorage.clear()
+  document.documentElement.classList.remove('dark')
+})
 
 describe('App', () => {
   it('renders the welcome heading', () => {
@@ -66,5 +71,25 @@ describe('App', () => {
     expect(screen.getByLabelText('Email')).toBeInTheDocument()
     expect(screen.getByLabelText('Message')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Send Message' })).toBeInTheDocument()
+  })
+
+  it('renders the dark mode toggle', () => {
+    render(<App />)
+    expect(screen.getByRole('button', { name: /switch to dark mode/i })).toBeInTheDocument()
+  })
+
+  it('toggles dark mode when clicked', () => {
+    render(<App />)
+    const toggle = screen.getByRole('button', { name: /switch to dark mode/i })
+    fireEvent.click(toggle)
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(screen.getByRole('button', { name: /switch to light mode/i })).toBeInTheDocument()
+  })
+
+  it('persists dark mode preference to localStorage', () => {
+    render(<App />)
+    const toggle = screen.getByRole('button', { name: /switch to dark mode/i })
+    fireEvent.click(toggle)
+    expect(localStorage.getItem('theme')).toBe('dark')
   })
 })
