@@ -1,3 +1,28 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Secret theme overrides */
+[data-theme] {
+  --color-white: var(--theme-bg);
+  --color-gray-50: var(--theme-bg-alt);
+  --color-gray-100: var(--theme-tag);
+  --color-gray-200: var(--theme-border);
+  --color-gray-300: var(--theme-border);
+  --color-gray-400: var(--theme-text-muted);
+  --color-gray-500: var(--theme-text-muted);
+  --color-gray-600: var(--theme-text);
+  --color-gray-700: var(--theme-text);
+  --color-gray-800: var(--theme-bg-dark-alt);
+  --color-gray-900: var(--theme-heading);
+}
+
+[data-theme].dark {
+  --color-gray-100: var(--theme-heading-dark);
+  --color-gray-300: var(--theme-heading-dark);
+  --color-gray-400: var(--theme-text-muted);
+  --color-gray-600: var(--theme-border-dark);
+  --color-gray-700: var(--theme-tag-dark);
+  --color-gray-800: var(--theme-bg-dark-alt);
+  --color-gray-900: var(--theme-bg-dark);
+}

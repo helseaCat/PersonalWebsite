@@ -1,5 +1,6 @@
 import Header from './Header'
 import Footer from './Footer'
+import StickyNote from './StickyNote'
 import useDarkMode from '../hooks/useDarkMode'
 
 interface LayoutProps {
@@ -14,6 +15,7 @@ function Layout({ children }: LayoutProps) {
       <Header isDark={isDark} toggleDarkMode={toggle} />
       <main className="flex-1">{children}</main>
       <Footer />
+      <StickyNote />
     </div>
   )
 }
